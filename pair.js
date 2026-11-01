@@ -44,7 +44,6 @@ router.get('/', async (req, res) => {
                 browser: Browsers.macOS('Safari')
             });
 
-            // Handle QR Code generation
             if (type === 'qr') {
                 sock.ev.on('connection.update', async (update) => {
                     const { qr } = update;
@@ -52,6 +51,7 @@ router.get('/', async (req, res) => {
                         try {
                             let qrImageUrl = await qrcode.toDataURL(qr);
                             res.json({ type: 'qr', qr: qrImageUrl });
+                            removeFile(sessionDir);
                         } catch (e) {
                             console.error(e);
                         }
@@ -61,7 +61,6 @@ router.get('/', async (req, res) => {
 
             sock.ev.on('creds.update', saveCreds);
 
-            // Handle Pairing Code generation
             if (type === 'pairing' && num) {
                 if (!sock.authState.creds.registered) {
                     await delay(3000);
@@ -79,12 +78,9 @@ router.get('/', async (req, res) => {
                 if (connection === 'open') {
                     await delay(5000);
                     let credsPath = `${sessionDir}/creds.json`;
-                    
-                    // Check if creds.json exists before reading
                     if (fs.existsSync(credsPath)) {
                         let credsFile = fs.readFileSync(credsPath);
                         let txt = Buffer.from(credsFile).toString('base64');
-                        
                         try {
                             let upload = await pastebin.createPaste({
                                 text: txt,
