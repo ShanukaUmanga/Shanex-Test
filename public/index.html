@@ -3,48 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHANEX-MD | Premium Pairing & QR Portal</title>
+    <title>SHANEX-MD | Next-Level Bot Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
-        body { background-color: #0b0f19; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow-x: hidden; }
-        .container { background: rgba(17, 24, 39, 0.85); border: 2px solid #f39c12; border-radius: 16px; padding: 30px; width: 100%; max-width: 450px; text-align: center; box-shadow: 0 0 25px rgba(243, 156, 18, 0.3); backdrop-filter: blur(10px); }
-        h1 { font-family: 'Orbitron', sans-serif; color: #f39c12; font-size: 24px; margin-bottom: 10px; text-shadow: 0 0 10px rgba(243, 156, 18, 0.5); }
-        p { color: #9ca3af; font-size: 13px; margin-bottom: 25px; }
-        .input-group { margin-bottom: 20px; text-align: left; }
-        label { display: block; font-size: 12px; color: #f39c12; margin-bottom: 5px; font-weight: 600; }
-        input { width: 100%; padding: 12px 15px; background: #1f2937; border: 1px solid #374151; border-radius: 8px; color: #fff; font-size: 14px; outline: none; transition: 0.3s; }
-        input:focus { border-color: #f39c12; box-shadow: 0 0 8px rgba(243, 156, 18, 0.4); }
-        button { width: 100%; padding: 12px; background: linear-gradient(135deg, #f39c12, #d35400); border: none; border-radius: 8px; color: #fff; font-weight: 600; font-size: 15px; cursor: pointer; transition: 0.3s; font-family: 'Orbitron', sans-serif; }
-        button:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 0 15px rgba(243, 156, 18, 0.5); }
-        .result-box { margin-top: 25px; background: #1f2937; border-radius: 8px; padding: 15px; display: none; border: 1px dashed #f39c12; }
-        .code-display { font-family: 'Orbitron', sans-serif; font-size: 22px; color: #2ecc71; letter-spacing: 2px; margin-top: 5px; }
-        img { max-width: 200px; border-radius: 8px; margin-top: 10px; border: 2px solid #fff; }
-        .loader { border: 3px solid #374151; border-top: 3px solid #f39c12; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; display: none; }
+        body { background: radial-gradient(circle at center, #111827 0%, #030712 100%); color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        .container { background: rgba(15, 23, 42, 0.9); border: 2px solid #38bdf8; border-radius: 20px; padding: 30px; width: 100%; max-width: 480px; text-align: center; box-shadow: 0 0 30px rgba(56, 189, 248, 0.4); backdrop-filter: blur(15px); position: relative; }
+        
+        /* Creator Profile Style */
+        .creator-profile { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 20px; background: rgba(30, 41, 59, 0.6); padding: 10px 15px; border-radius: 50px; border: 1px solid rgba(56, 189, 248, 0.3); }
+        .creator-avatar { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.5); }
+        .creator-info { text-align: left; }
+        .creator-info h3 { font-size: 14px; color: #38bdf8; font-family: 'Orbitron', sans-serif; }
+        .creator-info p { font-size: 11px; color: #94a3b8; margin: 0; }
+
+        h1 { font-family: 'Orbitron', sans-serif; color: #38bdf8; font-size: 22px; margin-bottom: 5px; text-shadow: 0 0 10px rgba(56, 189, 248, 0.6); }
+        .subtitle { color: #94a3b8; font-size: 12px; margin-bottom: 20px; }
+
+        /* Tabs */
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .tab-btn { flex: 1; padding: 10px; background: #1e293b; border: 1px solid #334155; color: #94a3b8; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; transition: 0.3s; }
+        .tab-btn.active { background: #38bdf8; color: #030712; border-color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.5); }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .input-group { margin-bottom: 15px; text-align: left; }
+        label { display: block; font-size: 11px; color: #38bdf8; margin-bottom: 5px; font-weight: 600; }
+        input { width: 100%; padding: 12px 15px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; color: #fff; font-size: 14px; outline: none; transition: 0.3s; }
+        input:focus { border-color: #38bdf8; box-shadow: 0 0 8px rgba(56, 189, 248, 0.4); }
+
+        button.action-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, #38bdf8, #2563eb); border: none; border-radius: 8px; color: #fff; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.3s; font-family: 'Orbitron', sans-serif; }
+        button.action-btn:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 0 15px rgba(56, 189, 248, 0.6); }
+
+        .result-box { margin-top: 20px; background: #1e293b; border-radius: 8px; padding: 15px; display: none; border: 1px dashed #38bdf8; }
+        .code-display { font-family: 'Orbitron', sans-serif; font-size: 20px; color: #4ade80; letter-spacing: 2px; margin-top: 5px; }
+        img.qr-img { max-width: 180px; border-radius: 8px; margin-top: 10px; border: 2px solid #fff; }
+        
+        .loader { border: 3px solid #334155; border-top: 3px solid #38bdf8; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 15px auto; display: none; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .footer-credit { margin-top: 20px; font-size: 10px; color: #64748b; font-family: 'Orbitron', sans-serif; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>⚡ SHANEX-MD ⚡</h1>
-        <p>Select your connection method below to link your WhatsApp bot instantly.</p>
-        
-        <div class="input-group">
-            <label>WhatsApp Number (with Country Code)</label>
-            <input type="text" id="phone" placeholder="e.g., 9477xxxxxxx">
+        <!-- Creator & User Profile Section -->
+        <div class="creator-profile">
+            <!-- මෙතැනට ඔයාගේ ෆොටෝ එකේ ලින්ක් එක දාන්න -->
+            <img src="https://i.imgur.com/7bQ6q7s.png" alt="Shanuka Umanga" class="creator-avatar">
+            <div class="creator-info">
+                <h3>SHANUKA UMANGA</h3>
+                <p>Lead Developer & Creator</p>
+            </div>
         </div>
+
+        <h1>⚡ SHANEX-MD ⚡</h1>
+        <p class="subtitle">Next-Level WhatsApp Bot Linking Hub</p>
         
-        <button onclick="getPairingCode()">GET PAIRING CODE</button>
+        <!-- Tabs Selection -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('pairing')">Pairing Code</button>
+            <button class="tab-btn" onclick="switchTab('qr')">QR Code</button>
+        </div>
+
+        <!-- Pairing Code Tab -->
+        <div id="pairingTab" class="tab-content active">
+            <div class="input-group">
+                <label>WhatsApp Number (with Country Code)</label>
+                <input type="text" id="phone" placeholder="e.g., 9477xxxxxxx">
+            </div>
+            <button class="action-btn" onclick="getPairingCode()">GET PAIRING CODE</button>
+        </div>
+
+        <!-- QR Code Tab -->
+        <div id="qrTab" class="tab-content">
+            <button class="action-btn" onclick="getQRCode()">GENERATE QR CODE</button>
+        </div>
         
         <div class="loader" id="loader"></div>
 
         <div class="result-box" id="resultBox">
             <div id="resultContent"></div>
         </div>
+
+        <div class="footer-credit">POWERED BY SHANEX-MD SYSTEM</div>
     </div>
 
     <script>
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            if(tab === 'pairing') {
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+                document.getElementById('pairingTab').classList.add('active');
+            } else {
+                document.querySelectorAll('.tab-btn')[1].classList.add('active');
+                document.getElementById('qrTab').classList.add('active');
+            }
+            document.getElementById('resultBox').style.display = 'none';
+        }
+
         async function getPairingCode() {
             let phone = document.getElementById('phone').value.trim();
             let loader = document.getElementById('loader');
@@ -61,23 +122,49 @@
             resultContent.innerHTML = '';
 
             try {
-                let res = await fetch(`/pair?number=${phone}`);
+                let res = await fetch(`/pair?number=${phone}&type=pairing`);
                 let data = await res.json();
                 
                 loader.style.display = 'none';
                 resultBox.style.display = 'block';
 
                 if (data.code) {
-                    resultContent.innerHTML = `<span>Your Pairing Code:</span><div class="code-display">${data.code}</div><p style="margin-top:10px; font-size:11px;">Go to WhatsApp > Linked Devices > Link with phone number</p>`;
-                } else if (data.qr) {
-                    resultContent.innerHTML = `<span>Scan QR Code:</span><br><img src="${data.qr}" alt="QR Code">`;
+                    resultContent.innerHTML = `<span>Your Pairing Code:</span><div class="code-display">${data.code}</div><p style="margin-top:10px; font-size:11px; color:#94a3b8;">Go to WhatsApp > Linked Devices > Link with phone number</p>`;
                 } else {
-                    resultContent.innerHTML = `<span style="color: #e74c3c;">Failed to generate code. Try again!</span>`;
+                    resultContent.innerHTML = `<span style="color: #f87171;">Failed to generate code. Try again!</span>`;
                 }
             } catch (e) {
                 loader.style.display = 'none';
                 resultBox.style.display = 'block';
-                resultContent.innerHTML = `<span style="color: #e74c3c;">An error occurred. Server might be busy.</span>`;
+                resultContent.innerHTML = `<span style="color: #f87171;">An error occurred. Server might be busy.</span>`;
+            }
+        }
+
+        async function getQRCode() {
+            let loader = document.getElementById('loader');
+            let resultBox = document.getElementById('resultBox');
+            let resultContent = document.getElementById('resultContent');
+
+            loader.style.display = 'block';
+            resultBox.style.display = 'none';
+            resultContent.innerHTML = '';
+
+            try {
+                let res = await fetch(`/pair?type=qr`);
+                let data = await res.json();
+                
+                loader.style.display = 'none';
+                resultBox.style.display = 'block';
+
+                if (data.qr) {
+                    resultContent.innerHTML = `<span>Scan QR Code:</span><br><img src="${data.qr}" alt="QR Code" class="qr-img">`;
+                } else {
+                    resultContent.innerHTML = `<span style="color: #f87171;">Failed to generate QR. Try again!</span>`;
+                }
+            } catch (e) {
+                loader.style.display = 'none';
+                resultBox.style.display = 'block';
+                resultContent.innerHTML = `<span style="color: #f87171;">An error occurred. Server might be busy.</span>`;
             }
         }
     </script>
