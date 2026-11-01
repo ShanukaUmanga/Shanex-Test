@@ -3,114 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHANEX-MD - PAIRING CODE</title>
+    <title>SHANEX-MD | Premium Pairing & QR Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: #0b0c10;
-            color: #d4af37;
-            font-family: 'Courier New', Courier, monospace;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .container {
-            background: #1f2833;
-            border: 2px solid #d4af37;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-        }
-        h2 {
-            margin-bottom: 5px;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        p {
-            font-size: 14px;
-            color: #c5c6c7;
-        }
-        input {
-            width: 80%;
-            padding: 12px;
-            margin: 15px 0;
-            border: 1px solid #d4af37;
-            background: #0b0c10;
-            color: #66fcf1;
-            font-size: 16px;
-            border-radius: 6px;
-            text-align: center;
-            outline: none;
-        }
-        button {
-            padding: 12px 25px;
-            background-color: #d4af37;
-            color: #000;
-            font-weight: bold;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: 0.3s;
-        }
-        button:hover {
-            background-color: #45a29e;
-            color: #fff;
-            box-shadow: 0 0 10px #45a29e;
-        }
-        .code-box {
-            margin-top: 20px;
-            font-size: 22px;
-            font-weight: bold;
-            color: #66fcf1;
-            letter-spacing: 3px;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+        body { background-color: #0b0f19; color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow-x: hidden; }
+        .container { background: rgba(17, 24, 39, 0.85); border: 2px solid #f39c12; border-radius: 16px; padding: 30px; width: 100%; max-width: 450px; text-align: center; box-shadow: 0 0 25px rgba(243, 156, 18, 0.3); backdrop-filter: blur(10px); }
+        h1 { font-family: 'Orbitron', sans-serif; color: #f39c12; font-size: 24px; margin-bottom: 10px; text-shadow: 0 0 10px rgba(243, 156, 18, 0.5); }
+        p { color: #9ca3af; font-size: 13px; margin-bottom: 25px; }
+        .input-group { margin-bottom: 20px; text-align: left; }
+        label { display: block; font-size: 12px; color: #f39c12; margin-bottom: 5px; font-weight: 600; }
+        input { width: 100%; padding: 12px 15px; background: #1f2937; border: 1px solid #374151; border-radius: 8px; color: #fff; font-size: 14px; outline: none; transition: 0.3s; }
+        input:focus { border-color: #f39c12; box-shadow: 0 0 8px rgba(243, 156, 18, 0.4); }
+        button { width: 100%; padding: 12px; background: linear-gradient(135deg, #f39c12, #d35400); border: none; border-radius: 8px; color: #fff; font-weight: 600; font-size: 15px; cursor: pointer; transition: 0.3s; font-family: 'Orbitron', sans-serif; }
+        button:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 0 15px rgba(243, 156, 18, 0.5); }
+        .result-box { margin-top: 25px; background: #1f2937; border-radius: 8px; padding: 15px; display: none; border: 1px dashed #f39c12; }
+        .code-display { font-family: 'Orbitron', sans-serif; font-size: 22px; color: #2ecc71; letter-spacing: 2px; margin-top: 5px; }
+        img { max-width: 200px; border-radius: 8px; margin-top: 10px; border: 2px solid #fff; }
+        .loader { border: 3px solid #374151; border-top: 3px solid #f39c12; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; display: none; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>⚡ SHANEX-MD ⚡</h2>
-    <p>Enter your WhatsApp number with Country Code (e.g., 9477xxxxxxx)</p>
-    
-    <input type="number" id="phoneNumber" placeholder="947xxxxxxxx" required>
-    <br>
-    <button onclick="getPairCode()">GET PAIRING CODE</button>
+    <div class="container">
+        <h1>⚡ SHANEX-MD ⚡</h1>
+        <p>Select your connection method below to link your WhatsApp bot instantly.</p>
+        
+        <div class="input-group">
+            <label>WhatsApp Number (with Country Code)</label>
+            <input type="text" id="phone" placeholder="e.g., 9477xxxxxxx">
+        </div>
+        
+        <button onclick="getPairingCode()">GET PAIRING CODE</button>
+        
+        <div class="loader" id="loader"></div>
 
-    <div id="result" class="code-box"></div>
-</div>
+        <div class="result-box" id="resultBox">
+            <div id="resultContent"></div>
+        </div>
+    </div>
 
-<script>
-    async function getPairCode() {
-        const num = document.getElementById('phoneNumber').value;
-        const resDiv = document.getElementById('result');
-        
-        if (!num) {
-            resDiv.innerText = "Please enter a valid number!";
-            return;
-        }
-        
-        resDiv.innerText = "Generating Code...";
-        
-        try {
-            const response = await fetch(`/pair?number=${num}`);
-            const data = await response.json();
-            
-            if (data.code) {
-                resDiv.innerText = `CODE: ${data.code}`;
-            } else {
-                resDiv.innerText = "Error getting code. Try again!";
+    <script>
+        async function getPairingCode() {
+            let phone = document.getElementById('phone').value.trim();
+            let loader = document.getElementById('loader');
+            let resultBox = document.getElementById('resultBox');
+            let resultContent = document.getElementById('resultContent');
+
+            if (!phone) {
+                alert('Please enter your WhatsApp number first!');
+                return;
             }
-        } catch (err) {
-            resDiv.innerText = "Failed to connect to server!";
-        }
-    }
-</script>
 
+            loader.style.display = 'block';
+            resultBox.style.display = 'none';
+            resultContent.innerHTML = '';
+
+            try {
+                let res = await fetch(`/pair?number=${phone}`);
+                let data = await res.json();
+                
+                loader.style.display = 'none';
+                resultBox.style.display = 'block';
+
+                if (data.code) {
+                    resultContent.innerHTML = `<span>Your Pairing Code:</span><div class="code-display">${data.code}</div><p style="margin-top:10px; font-size:11px;">Go to WhatsApp > Linked Devices > Link with phone number</p>`;
+                } else if (data.qr) {
+                    resultContent.innerHTML = `<span>Scan QR Code:</span><br><img src="${data.qr}" alt="QR Code">`;
+                } else {
+                    resultContent.innerHTML = `<span style="color: #e74c3c;">Failed to generate code. Try again!</span>`;
+                }
+            } catch (e) {
+                loader.style.display = 'none';
+                resultBox.style.display = 'block';
+                resultContent.innerHTML = `<span style="color: #e74c3c;">An error occurred. Server might be busy.</span>`;
+            }
+        }
+    </script>
 </body>
 </html>
