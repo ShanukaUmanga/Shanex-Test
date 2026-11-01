@@ -1,31 +1,18 @@
 {
   "name": "shanex-md",
   "version": "1.0.0",
-  "description": "A high-end Cyber-Hacker themed Multi-Device WhatsApp Bot",
+  "description": "WhatsApp Bot with Pairing Code and QR",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
-    "@whiskeysockets/baileys": "^6.7.0",
-    "pino": "^8.14.1",
-    "chalk": "^4.1.2",
-    "axios": "^1.4.0",
-    "qrcode-terminal": "^0.12.0",
-    "file-type": "^16.5.3",
-    "node-fetch": "^2.6.9",
-    "FormData": "latest",
-    "express": "^4.19.2"
-  },
-  "devDependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/shanexstudio/SHANEX-MD.git"
-  },
-  "author": "Shanuka Umanga",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/shanexstudio/SHANEX-MD/issues"
-  },
-  "homepage": "https://github.com/shanexstudio/SHANEX-MD#readme"
+    "@hapi/boom": "^10.0.1",
+    "@whiskeysockets/baileys": "^6.7.24",
+    "express": "^4.19.2",
+    "pastebin-js": "^1.0.6",
+    "pino": "^9.0.0",
+    "qrcode": "^1.5.3",
+    "qrcode-terminal": "^0.12.0"
+  }
 }
