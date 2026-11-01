@@ -1,7 +1,7 @@
-
 const express = require('express');
 const app = express();
 const path = require('path');
+const fs = require('fs');
 
 const pairRouter = require('./pair');
 
@@ -31,6 +31,23 @@ app.listen(PORT, '0.0.0.0', () => {
         `[⚡] SHANEX-MD Web Server running on port ${PORT}`
     );
 });
+
+// Load Plugins Dynamically
+const plugins = [];
+const pluginFolder = path.join(__dirname, 'plugins');
+if (fs.existsSync(pluginFolder)) {
+    fs.readdirSync(pluginFolder).forEach(file => {
+        if (file.endsWith('.js')) {
+            try {
+                const plugin = require(path.join(pluginFolder, file));
+                plugins.push({ name: file, plugin });
+                console.log(chalk.green(`[✔] Loaded Plugin: ${file}`));
+            } catch (e) {
+                console.log(chalk.red(`[!] Error loading plugin ${file}:`, e));
+            }
+        }
+    });
+}
 
 // WhatsApp Bot Connection
 let reconnecting = false;
@@ -101,7 +118,7 @@ async function startShanex() {
             }
         });
 
-        // Message & Command Handling
+        // Message & Plugin Command Handling
         sock.ev.on('messages.upsert', async (chatUpdate) => {
             try {
                 const mek = chatUpdate.messages?.[0];
@@ -120,22 +137,37 @@ async function startShanex() {
                             : '';
 
                 const from = mek.key.remoteJid;
+                const m = { chat: from, ...mek };
 
                 if (!from || !body) return;
 
-                if (
-                    body.trim().toLowerCase() === '.ping' ||
-                    body.trim().toLowerCase() === 'ping'
-                ) {
+                const textLower = body.trim().toLowerCase();
+
+                // Built-in Ping Command
+                if (textLower === '.ping' || textLower === 'ping') {
                     await sock.sendMessage(
                         from,
                         {
-                            text:
-                                'Pong! 🚀 SHANEX-MD is active and working!'
+                            text: 'Pong! 🚀 SHANEX-MD is active and working!'
                         },
                         { quoted: mek }
                     );
                 }
+
+                // Execute Plugins Automatically
+                for (const { plugin } of plugins) {
+                    if (typeof plugin === 'function') {
+                        // Function-based plugins (e.g., alive.js)
+                        await plugin(sock, mek, m, { from, reply: (t) => sock.sendMessage(from, { text: t }, { quoted: mek }) });
+                    } else if (typeof plugin === 'object' && typeof plugin.run === 'function') {
+                        // Object-based plugins with names/aliases (e.g., menu.js)
+                        const cmdName = textLower.startsWith('.') ? textLower.slice(1) : textLower;
+                        if (plugin.name === cmdName || (plugin.alias && plugin.alias.includes(cmdName))) {
+                            await plugin.run(sock, mek, m, { from, reply: (t) => sock.sendMessage(from, { text: t }, { quoted: mek }) });
+                        }
+                    }
+                }
+
             } catch (err) {
                 console.error(
                     '[SHANEX-MD] Message handler error:',
