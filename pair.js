@@ -36,7 +36,7 @@ router.get('/', async (req, res) => {
                 let code = await sock.requestPairingCode(num);
                 code = code?.match(/.{1,4}/g)?.join("-") || code;
                 if (!res.headersSent) {
-                    res.send({ code });
+                    res.json({ code });
                 }
             }
 
@@ -44,11 +44,8 @@ router.get('/', async (req, res) => {
                 const { connection, lastDisconnect } = update;
                 if (connection === 'open') {
                     await delay(5000);
-                    let credsFile = `./session/creds.json`;
-                    // Here you can handle session upload or sending session ID to user
-                    console.log("Connected successfully!");
-                    await delay(1000);
-                    process.exit(0);
+                    console.log("Pairing Connected successfully!");
+                    // process.exit(0) ඉවත් කර ඇත. දැන් සර්වර් එක ඕෆ් වන්නේ නැත.
                 } else if (connection === 'close') {
                     let reason = new Boom(lastDisconnect?.error)?.output?.statusCode;
                     if (reason === DisconnectReason.connectionClosed) {
