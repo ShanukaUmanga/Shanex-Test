@@ -3,64 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHANEX-MD | Next-Level Bot Portal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>SHANEX-MD | Cyber Golden Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
-        body { background: radial-gradient(circle at center, #111827 0%, #030712 100%); color: #fff; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow-x: hidden; }
-        .container { background: rgba(15, 23, 42, 0.9); border: 2px solid #38bdf8; border-radius: 20px; padding: 30px; width: 100%; max-width: 480px; text-align: center; box-shadow: 0 0 30px rgba(56, 189, 248, 0.4); backdrop-filter: blur(15px); position: relative; }
+        
+        /* Animated Golden Hacker Background */
+        body { 
+            background: #050505; 
+            color: #ffd700; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            overflow: hidden; 
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.08) 10%, transparent 40%);
+            animation: rotateBg 20s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes rotateBg {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .container { 
+            background: rgba(10, 10, 10, 0.95); 
+            border: 2px solid #ffd700; 
+            border-radius: 20px; 
+            padding: 30px; 
+            width: 100%; 
+            max-width: 480px; 
+            text-align: center; 
+            box-shadow: 0 0 35px rgba(255, 215, 0, 0.3); 
+            backdrop-filter: blur(15px); 
+            position: relative; 
+            z-index: 1; 
+        }
         
         /* Creator Profile Style */
-        .creator-profile { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 20px; background: rgba(30, 41, 59, 0.6); padding: 10px 15px; border-radius: 50px; border: 1px solid rgba(56, 189, 248, 0.3); }
-        .creator-avatar { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.5); }
+        .creator-profile { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 15px; 
+            margin-bottom: 20px; 
+            background: rgba(30, 25, 5, 0.8); 
+            padding: 10px 15px; 
+            border-radius: 50px; 
+            border: 1px solid #ffd700; 
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+        }
+        .creator-avatar { 
+            width: 50px; 
+            height: 50px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            border: 2px solid #ffd700; 
+            box-shadow: 0 0 10px #ffd700; 
+        }
         .creator-info { text-align: left; }
-        .creator-info h3 { font-size: 14px; color: #38bdf8; font-family: 'Orbitron', sans-serif; }
-        .creator-info p { font-size: 11px; color: #94a3b8; margin: 0; }
+        .creator-info h3 { font-size: 14px; color: #ffd700; font-family: 'Orbitron', sans-serif; letter-spacing: 1px; }
+        .creator-info p { font-size: 11px; color: #cca300; margin: 0; }
 
-        h1 { font-family: 'Orbitron', sans-serif; color: #38bdf8; font-size: 22px; margin-bottom: 5px; text-shadow: 0 0 10px rgba(56, 189, 248, 0.6); }
-        .subtitle { color: #94a3b8; font-size: 12px; margin-bottom: 20px; }
+        h1 { font-family: 'Orbitron', sans-serif; color: #ffd700; font-size: 22px; margin-bottom: 5px; text-shadow: 0 0 10px rgba(255, 215, 0, 0.6); }
+        .subtitle { color: #cca300; font-size: 12px; margin-bottom: 20px; font-family: 'Orbitron', sans-serif; }
 
         /* Tabs */
         .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-        .tab-btn { flex: 1; padding: 10px; background: #1e293b; border: 1px solid #334155; color: #94a3b8; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; transition: 0.3s; }
-        .tab-btn.active { background: #38bdf8; color: #030712; border-color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.5); }
+        .tab-btn { flex: 1; padding: 10px; background: #1a1700; border: 1px solid #665200; color: #cca300; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; transition: 0.3s; font-family: 'Orbitron', sans-serif; }
+        .tab-btn.active { background: #ffd700; color: #050505; border-color: #ffd700; box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); font-weight: 900; }
 
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
         .input-group { margin-bottom: 15px; text-align: left; }
-        label { display: block; font-size: 11px; color: #38bdf8; margin-bottom: 5px; font-weight: 600; }
-        input { width: 100%; padding: 12px 15px; background: #1e293b; border: 1px solid #334155; border-radius: 8px; color: #fff; font-size: 14px; outline: none; transition: 0.3s; }
-        input:focus { border-color: #38bdf8; box-shadow: 0 0 8px rgba(56, 189, 248, 0.4); }
+        label { display: block; font-size: 11px; color: #ffd700; margin-bottom: 5px; font-weight: 600; font-family: 'Orbitron', sans-serif; }
+        input { width: 100%; padding: 12px 15px; background: #141200; border: 1px solid #665200; border-radius: 8px; color: #ffd700; font-size: 14px; outline: none; transition: 0.3s; }
+        input:focus { border-color: #ffd700; box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
 
-        button.action-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, #38bdf8, #2563eb); border: none; border-radius: 8px; color: #fff; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.3s; font-family: 'Orbitron', sans-serif; }
-        button.action-btn:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 0 15px rgba(56, 189, 248, 0.6); }
+        button.action-btn { width: 100%; padding: 12px; background: linear-gradient(135deg, #ffd700, #ff8c00); border: none; border-radius: 8px; color: #050505; font-weight: 900; font-size: 14px; cursor: pointer; transition: 0.3s; font-family: 'Orbitron', sans-serif; text-shadow: 0 0 2px rgba(255,255,255,0.5); }
+        button.action-btn:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
 
-        .result-box { margin-top: 20px; background: #1e293b; border-radius: 8px; padding: 15px; display: none; border: 1px dashed #38bdf8; }
-        .code-display { font-family: 'Orbitron', sans-serif; font-size: 20px; color: #4ade80; letter-spacing: 2px; margin-top: 5px; }
-        img.qr-img { max-width: 180px; border-radius: 8px; margin-top: 10px; border: 2px solid #fff; }
+        .result-box { margin-top: 20px; background: #141200; border-radius: 8px; padding: 15px; display: none; border: 1px dashed #ffd700; }
+        .code-display { font-family: 'Orbitron', sans-serif; font-size: 20px; color: #00ff66; letter-spacing: 2px; margin-top: 5px; text-shadow: 0 0 8px rgba(0,255,102,0.6); }
+        .timer-display { font-size: 12px; color: #ff4d4d; margin-top: 8px; font-family: 'Orbitron', sans-serif; }
+        img.qr-img { max-width: 180px; border-radius: 8px; margin-top: 10px; border: 2px solid #ffd700; box-shadow: 0 0 15px rgba(255, 215, 0, 0.4); }
         
-        .loader { border: 3px solid #334155; border-top: 3px solid #38bdf8; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 15px auto; display: none; }
+        .loader { border: 3px solid #332b00; border-top: 3px solid #ffd700; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 15px auto; display: none; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .footer-credit { margin-top: 20px; font-size: 10px; color: #64748b; font-family: 'Orbitron', sans-serif; }
+        .footer-credit { margin-top: 20px; font-size: 10px; color: #806600; font-family: 'Orbitron', sans-serif; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Creator & User Profile Section -->
+        <!-- Creator Profile Section -->
         <div class="creator-profile">
-            <!-- මෙතැනට ඔයාගේ ෆොටෝ එකේ ලින්ක් එක දාන්න -->
-            <img src="https://i.ibb.co/Pvctqq8R/Shanex-Studio-Cyber-Gold-Banner.png" alt="Shanuka Umanga" class="creator-avatar">
+            <img src="https://i.ibb.co/3s6K984/hacker-avatar.png" alt="Shanuka Umanga" class="creator-avatar" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150'">
             <div class="creator-info">
                 <h3>SHANUKA UMANGA</h3>
-                <p>Lead Developer & Creator</p>
+                <p>Cyber Developer & Creator</p>
             </div>
         </div>
 
         <h1>⚡ SHANEX-MD ⚡</h1>
-        <p class="subtitle">Next-Level WhatsApp Bot Linking Hub</p>
+        <p class="subtitle">CYBER GOLDEN LINKING PORTAL</p>
         
         <!-- Tabs Selection -->
         <div class="tabs">
@@ -92,9 +149,12 @@
     </div>
 
     <script>
+        let countdownInterval;
+
         function switchTab(tab) {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            clearInterval(countdownInterval);
             
             if(tab === 'pairing') {
                 document.querySelectorAll('.tab-btn')[0].classList.add('active');
@@ -120,6 +180,7 @@
             loader.style.display = 'block';
             resultBox.style.display = 'none';
             resultContent.innerHTML = '';
+            clearInterval(countdownInterval);
 
             try {
                 let res = await fetch(`/pair?number=${phone}&type=pairing`);
@@ -129,14 +190,33 @@
                 resultBox.style.display = 'block';
 
                 if (data.code) {
-                    resultContent.innerHTML = `<span>Your Pairing Code:</span><div class="code-display">${data.code}</div><p style="margin-top:10px; font-size:11px; color:#94a3b8;">Go to WhatsApp > Linked Devices > Link with phone number</p>`;
+                    let timeLeft = 60; // 60 seconds expiration timer
+                    resultContent.innerHTML = `
+                        <span style="font-size:11px; color:#ffd700; font-family:'Orbitron';">Your Pairing Code:</span>
+                        <div class="code-display">${data.code}</div>
+                        <div class="timer-display" id="timer">Code expires in: ${timeLeft}s</div>
+                        <p style="margin-top:8px; font-size:10px; color:#cca300;">Go to WhatsApp > Linked Devices > Link with phone number</p>
+                    `;
+
+                    countdownInterval = setInterval(() => {
+                        timeLeft--;
+                        let timerEl = document.getElementById('timer');
+                        if (timerEl) {
+                            timerEl.innerText = `Code expires in: ${timeLeft}s`;
+                        }
+                        if (timeLeft <= 0) {
+                            clearInterval(countdownInterval);
+                            if (timerEl) timerEl.innerText = "Code Expired! Generate a new one.";
+                        }
+                    }, 1000);
+
                 } else {
-                    resultContent.innerHTML = `<span style="color: #f87171;">Failed to generate code. Try again!</span>`;
+                    resultContent.innerHTML = `<span style="color: #ff4d4d;">Failed to generate code. Try again!</span>`;
                 }
             } catch (e) {
                 loader.style.display = 'none';
                 resultBox.style.display = 'block';
-                resultContent.innerHTML = `<span style="color: #f87171;">An error occurred. Server might be busy.</span>`;
+                resultContent.innerHTML = `<span style="color: #ff4d4d;">An error occurred. Server might be busy.</span>`;
             }
         }
 
@@ -145,26 +225,22 @@
             let resultBox = document.getElementById('resultBox');
             let resultContent = document.getElementById('resultContent');
 
-            loader.style.display = 'block';
-            resultBox.style.display = 'none';
-            resultContent.innerHTML = '';
+            loader.style.display = 'none'; // reset
+            resultBox.style.display = 'block';
+            resultContent.innerHTML = `<span style="color:#ffd700; font-size:12px;">Generating QR Code from Server... Please wait.</span>`;
 
             try {
                 let res = await fetch(`/pair?type=qr`);
                 let data = await res.json();
                 
-                loader.style.display = 'none';
-                resultBox.style.display = 'block';
-
                 if (data.qr) {
-                    resultContent.innerHTML = `<span>Scan QR Code:</span><br><img src="${data.qr}" alt="QR Code" class="qr-img">`;
+                    resultContent.innerHTML = `<span style="font-size:11px; color:#ffd700; font-family:'Orbitron';">Scan QR Code:</span><br><img src="${data.qr}" alt="QR Code" class="qr-img">`;
                 } else {
-                    resultContent.innerHTML = `<span style="color: #f87171;">Failed to generate QR. Try again!</span>`;
+                    resultContent.innerHTML = `<span style="color: #ff4d4d;">Failed to generate QR. Try again!</span>`;
                 }
             } catch (e) {
-                loader.style.display = 'none';
                 resultBox.style.display = 'block';
-                resultContent.innerHTML = `<span style="color: #f87171;">An error occurred. Server might be busy.</span>`;
+                resultContent.innerHTML = `<span style="color: #ff4d4d;">An error occurred. Server might be busy.</span>`;
             }
         }
     </script>
