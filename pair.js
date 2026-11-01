@@ -21,9 +21,9 @@ function removeFile(FilePath) {
 
 router.get('/', async (req, res) => {
     let num = req.query.number;
-    
-    // If no number provided, show the Web Interface
-    if (!num) {
+    let type = req.query.type; // pairing or qr
+
+    if (!num && type !== 'qr_session') {
         return res.sendFile(__dirname + '/public/index.html');
     }
 
@@ -44,10 +44,10 @@ router.get('/', async (req, res) => {
                 browser: Browsers.macOS('Safari')
             });
 
-            // Handle QR Code for Web Display
+            // Handle QR Code generation
             sock.ev.on('connection.update', async (update) => {
                 const { connection, qr } = update;
-                if (qr && !res.headersSent) {
+                if (qr && type === 'qr' && !res.headersSent) {
                     try {
                         let qrImageUrl = await qrcode.toDataURL(qr);
                         return res.json({ type: 'qr', qr: qrImageUrl });
@@ -59,14 +59,16 @@ router.get('/', async (req, res) => {
 
             sock.ev.on('creds.update', saveCreds);
 
-            // Handle Pairing Code
-            if (!sock.authState.creds.registered) {
-                await delay(1500);
-                num = num.replace(/[^0-9]/g, '');
-                let code = await sock.requestPairingCode(num);
-                code = code?.match(/.{1,4}/g)?.join('-') || code;
-                if (!res.headersSent) {
-                    return res.json({ type: 'pairing', code: code });
+            // Handle Pairing Code generation
+            if (type === 'pairing') {
+                if (!sock.authState.creds.registered) {
+                    await delay(2000);
+                    num = num.replace(/[^0-9]/g, '');
+                    let code = await sock.requestPairingCode(num);
+                    code = code?.match(/.{1,4}/g)?.join('-') || code;
+                    if (!res.headersSent) {
+                        return res.json({ type: 'pairing', code: code });
+                    }
                 }
             }
 
