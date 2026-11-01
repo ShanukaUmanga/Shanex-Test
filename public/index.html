@@ -19,7 +19,6 @@
             position: relative;
         }
 
-        /* Matrix Rain Canvas Background */
         #matrixCanvas {
             position: absolute;
             top: 0;
@@ -50,7 +49,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        /* Creator Profile Style */
         .creator-profile { 
             display: flex; 
             align-items: center; 
@@ -78,7 +76,6 @@
         h1 { font-family: 'Orbitron', sans-serif; color: #ffd700; font-size: 22px; margin-bottom: 5px; text-shadow: 0 0 10px rgba(255, 215, 0, 0.6); }
         .subtitle { color: #cca300; font-size: 12px; margin-bottom: 20px; font-family: 'Orbitron', sans-serif; }
 
-        /* Tabs */
         .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
         .tab-btn { flex: 1; padding: 10px; background: #1a1700; border: 1px solid #665200; color: #cca300; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; transition: 0.3s; font-family: 'Orbitron', sans-serif; }
         .tab-btn.active { background: #ffd700; color: #000; border-color: #ffd700; box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); font-weight: 900; }
@@ -106,7 +103,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Clean Normal Font for Pairing Code */
         .code-display { 
             font-family: 'Poppins', sans-serif; 
             font-size: 24px; 
@@ -136,11 +132,9 @@
 </head>
 <body>
 
-    <!-- Matrix Rain Background Animation -->
     <canvas id="matrixCanvas"></canvas>
 
     <div class="container">
-        <!-- Creator Profile Section -->
         <div class="creator-profile">
             <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150" alt="Shanuka Umanga" class="creator-avatar">
             <div class="creator-info">
@@ -152,13 +146,11 @@
         <h1>⚡ SHANEX-MD ⚡</h1>
         <p class="subtitle">GOLDEN MATRIX PORTAL</p>
         
-        <!-- Tabs Selection -->
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('pairing')">Pairing Code</button>
             <button class="tab-btn" onclick="switchTab('qr')">QR Code</button>
         </div>
 
-        <!-- Pairing Code Tab -->
         <div id="pairingTab" class="tab-content active">
             <div class="input-group">
                 <label>WhatsApp Number (with Country Code)</label>
@@ -167,7 +159,6 @@
             <button class="action-btn" onclick="getPairingCode()">GET PAIRING CODE</button>
         </div>
 
-        <!-- QR Code Tab -->
         <div id="qrTab" class="tab-content">
             <button class="action-btn" onclick="getQRCode()">GENERATE QR CODE</button>
         </div>
@@ -182,14 +173,13 @@
     </div>
 
     <script>
-        // Matrix Rain Effect Script
         const canvas = document.getElementById('matrixCanvas');
         const ctx = canvas.getContext('2d');
 
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        const characters = 'SHANEXMDGOLDEN';
+        const characters = '01SHANEXMDGOLDEN⚡🔥9477';
         const fontSize = 14;
         const columns = canvas.width / fontSize;
         const drops = [];
@@ -202,7 +192,7 @@
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            ctx.fillStyle = '#ffd700'; // Golden color
+            ctx.fillStyle = '#ffd700';
             ctx.font = fontSize + 'px monospace';
 
             for (let i = 0; i < drops.length; i++) {
@@ -222,7 +212,6 @@
             canvas.height = window.innerHeight;
         });
 
-        // Tab Switching & Logic
         let countdownInterval;
 
         function switchTab(tab) {
@@ -264,7 +253,7 @@
                 resultBox.style.display = 'block';
 
                 if (data.code) {
-                    let timeLeft = 60; // Expiration timer
+                    let timeLeft = 60;
                     resultContent.innerHTML = `
                         <span style="font-size:11px; color:#ffd700; font-family:'Orbitron';">Your Pairing Code:</span>
                         <div class="code-display">${data.code}</div>
