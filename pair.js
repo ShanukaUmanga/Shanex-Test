@@ -44,7 +44,7 @@ router.get('/', async (req, res) => {
                 browser: Browsers.macOS('Safari')
             });
 
-            // Handle QR Code generation properly
+            // Handle QR Code generation
             if (type === 'qr') {
                 sock.ev.on('connection.update', async (update) => {
                     const { qr } = update;
@@ -52,7 +52,6 @@ router.get('/', async (req, res) => {
                         try {
                             let qrImageUrl = await qrcode.toDataURL(qr);
                             res.json({ type: 'qr', qr: qrImageUrl });
-                            removeFile(sessionDir);
                         } catch (e) {
                             console.error(e);
                         }
@@ -79,22 +78,27 @@ router.get('/', async (req, res) => {
                 const { connection } = s;
                 if (connection === 'open') {
                     await delay(5000);
-                    let credsFile = fs.readFileSync(`${sessionDir}/creds.json`);
-                    let txt = Buffer.from(credsFile).toString('base64');
+                    let credsPath = `${sessionDir}/creds.json`;
                     
-                    try {
-                        let upload = await pastebin.createPaste({
-                            text: txt,
-                            title: 'SHANEX-MD-SESSION',
-                            format: 'json',
-                            visibility: 1
-                        });
-                        let sessionId = upload.split('/')[3];
-                        await sock.sendMessage(sock.user.id, { text: `SHANEX-MD SESSION ID: ${sessionId}` });
-                    } catch (e) {
-                        console.error(e);
+                    // Check if creds.json exists before reading
+                    if (fs.existsSync(credsPath)) {
+                        let credsFile = fs.readFileSync(credsPath);
+                        let txt = Buffer.from(credsFile).toString('base64');
+                        
+                        try {
+                            let upload = await pastebin.createPaste({
+                                text: txt,
+                                title: 'SHANEX-MD-SESSION',
+                                format: 'json',
+                                visibility: 1
+                            });
+                            let sessionId = upload.split('/')[3];
+                            await sock.sendMessage(sock.user.id, { text: `SHANEX-MD SESSION ID: ${sessionId}` });
+                        } catch (e) {
+                            console.error(e);
+                        }
                     }
-                    await delay(10000);
+                    await delay(5000);
                     removeFile(sessionDir);
                 }
             });
