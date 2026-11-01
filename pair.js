@@ -21,9 +21,9 @@ function removeFile(FilePath) {
 
 router.get('/', async (req, res) => {
     let num = req.query.number;
-    let type = req.query.type; // pairing or qr
+    let type = req.query.type;
 
-    if (!num && type !== 'qr_session') {
+    if (!num && type !== 'qr') {
         return res.sendFile(__dirname + '/public/index.html');
     }
 
@@ -44,30 +44,33 @@ router.get('/', async (req, res) => {
                 browser: Browsers.macOS('Safari')
             });
 
-            // Handle QR Code generation
-            sock.ev.on('connection.update', async (update) => {
-                const { connection, qr } = update;
-                if (qr && type === 'qr' && !res.headersSent) {
-                    try {
-                        let qrImageUrl = await qrcode.toDataURL(qr);
-                        return res.json({ type: 'qr', qr: qrImageUrl });
-                    } catch (e) {
-                        console.error(e);
+            // Handle QR Code generation properly
+            if (type === 'qr') {
+                sock.ev.on('connection.update', async (update) => {
+                    const { qr } = update;
+                    if (qr && !res.headersSent) {
+                        try {
+                            let qrImageUrl = await qrcode.toDataURL(qr);
+                            res.json({ type: 'qr', qr: qrImageUrl });
+                            removeFile(sessionDir);
+                        } catch (e) {
+                            console.error(e);
+                        }
                     }
-                }
-            });
+                });
+            }
 
             sock.ev.on('creds.update', saveCreds);
 
             // Handle Pairing Code generation
-            if (type === 'pairing') {
+            if (type === 'pairing' && num) {
                 if (!sock.authState.creds.registered) {
-                    await delay(2000);
+                    await delay(3000);
                     num = num.replace(/[^0-9]/g, '');
                     let code = await sock.requestPairingCode(num);
                     code = code?.match(/.{1,4}/g)?.join('-') || code;
                     if (!res.headersSent) {
-                        return res.json({ type: 'pairing', code: code });
+                        res.json({ type: 'pairing', code: code });
                     }
                 }
             }
@@ -93,7 +96,6 @@ router.get('/', async (req, res) => {
                     }
                     await delay(10000);
                     removeFile(sessionDir);
-                    process.exit(0);
                 }
             });
 
@@ -101,7 +103,7 @@ router.get('/', async (req, res) => {
             console.error(err);
             removeFile(sessionDir);
             if (!res.headersSent) {
-                return res.json({ error: 'Service Unavailable' });
+                res.json({ error: 'Service Unavailable' });
             }
         }
     }
